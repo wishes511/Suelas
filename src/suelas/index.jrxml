@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
+	<property name="ireport.zoom" value="1.3310000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select distinct a.CveAgente,ag.Nombre
+from RACobranzaPhylon.dbo.abonos a join RCPTPhylon.dbo.DFacturas dp on substring(a.referenciac,0,8)=dp.factura
+join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
+join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
+JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
+join RACobranzaPhylon.dbo.Agentes ag on a.CveAgente=ag.CveAgente
+where car.saldo=0 and a.cuenta=50 and c.Nombre NOT like '%MTRA%' and c.Nombre NOT like '%MUESTRA%'
+ and year(f.fecha)=2018 and (convert(date,a.fecha) between $P{f1}  and $P{f2})
+group by a.CveAgente,ag.nombre
+order by a.CveAgente]]>
+	</queryString>
+	<field name="CveAgente" class="java.lang.Short"/>
+	<field name="Nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="413" y="0" width="142" height="20" uuid="7365be10-a7bf-429a-8820-a742c23b8b8c"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="159" y="16" width="254" height="20" uuid="5585436c-b1f0-478d-85dc-06a4d690a29a"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Reporte de comisiones por agente del]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="182" y="36" width="84" height="20" uuid="cf3f8441-22f6-4963-a1fd-4a755c34011b"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="36" width="84" height="20" uuid="96b82d53-b1a3-4f36-a82a-9358c59357fd"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="266" y="36" width="26" height="20" uuid="6d3a843d-50c3-449e-920c-3418265cfda9"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[al]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="345" height="16" uuid="35037211-5367-4b5f-ab71-c4abd7dd3ff7"/>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SUBREPORT_DIR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="266" height="14" uuid="5fcdf161-1c6b-4e25-a865-a5b29f2c3c25"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="14" width="555" height="14" uuid="1b4dd0bc-f9aa-46fe-897d-a5de7a8fe7d0"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$F{CveAgente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "newReport3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="231" y="0" width="54" height="20" uuid="538c1d7d-cbbc-4c6f-9cc0-977a098aa1a9"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="285" y="0" width="40" height="20" uuid="b8d9fa62-7c78-4739-8c6e-eab38ec71f4d"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>

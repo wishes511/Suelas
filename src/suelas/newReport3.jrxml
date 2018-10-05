@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
+	<property name="ireport.zoom" value="1.100000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="agente" class="java.lang.Short">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select car.referencia,MAX(convert(date,a.Fechac)) as fecha,c.NOMBRE,max(convert(date,a.fecha)) as 'abono',max(car.Importe) as 'total'
+from RACobranzaPhylon.dbo.abonos a
+join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
+join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
+JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
+where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and 
+(convert(date,a.fecha) between $P{f1}  and $P{f2})  AND YEAR(f.FECHA)=2018 and  year(car.FDepDxC)=2018
+group by car.referencia,c.NOMBRE
+order by nombre]]>
+	</queryString>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="abono" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<variable name="total_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_2" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="totalcomision" class="java.math.BigDecimal" calculation="Sum"/>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="61" height="12" uuid="cbc0aa1c-4a79-4c6b-aac9-bcbb932c0f36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="0" width="126" height="12" uuid="d1946cb3-d135-4e0a-bb78-5faa34f9c6d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="0" width="68" height="12" uuid="2717cfc3-7435-46ff-a91e-0f77855d5c83"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="0" width="79" height="12" uuid="d97d79e9-5f01-41da-9d04-9675e8609a90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="17" height="12" uuid="b75651a4-3ce5-43d2-99d7-98c61403b3c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="0" width="66" height="12" uuid="27ef40a3-ad82-4b0e-9611-5bba48a01acf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="65" height="12" uuid="54487190-2972-4123-a49a-f36fe0dd01c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% Comision]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="0" width="73" height="12" uuid="77d01f71-4f99-42db-bd58-b1dbf7719afb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comision]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="61" height="12" uuid="590c7fd3-906a-4327-9fe3-1e369ca1695e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="126" height="12" uuid="4ba9329e-8f91-4d4b-9dce-ffd20fb8c858"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="0" width="68" height="12" uuid="fedeb2f5-aaed-496f-ae0a-3ef4719bba02"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="321" y="1" width="79" height="11" uuid="baa193f3-f0b8-4dcf-a4ce-70ada24342d2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="0" width="66" height="12" uuid="f915fe83-fb09-46e8-aba9-39df3208a634"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="400" y="1" width="155" height="11" uuid="08b7bed9-abf8-48a3-8e6a-afcca4c5b037"/>
+				<subreportParameter name="referencia">
+					<subreportParameterExpression><![CDATA[$F{referencia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$P{agente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="total">
+					<subreportParameterExpression><![CDATA[$F{total}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="comision" toVariable="totalcomision" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report2comp_nolinea.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="55e1a438-d8c3-4c39-9ebd-1a244f2f24e7"/>
+			</line>
+			<staticText>
+				<reportElement x="187" y="3" width="68" height="15" uuid="745218e9-eb5a-4ffc-a3dd-3dd8e2c64294"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="255" y="3" width="66" height="15" uuid="0c6131a6-875d-481d-9f2f-e4a5788c663f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="427" y="3" width="100" height="15" uuid="c2d0e66a-2457-4dea-898e-bcbb1d6e9929"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalcomision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
