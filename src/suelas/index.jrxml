@@ -63,13 +63,6 @@ order by a.CveAgente]]>
 				</textElement>
 				<text><![CDATA[al]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="0" width="345" height="16" uuid="35037211-5367-4b5f-ab71-c4abd7dd3ff7"/>
-				<textElement>
-					<font size="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{SUBREPORT_DIR}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<detail>
