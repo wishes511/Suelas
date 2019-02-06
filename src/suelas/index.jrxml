@@ -4,7 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\af\\comision\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="f1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -20,7 +20,7 @@ join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
 JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
 join RACobranzaPhylon.dbo.Agentes ag on a.CveAgente=ag.CveAgente
 where car.saldo=0 and a.cuenta=50 and c.Nombre NOT like '%MTRA%' and c.Nombre NOT like '%MUESTRA%'
- and year(f.fecha)=2018 and (convert(date,a.fecha) between $P{f1}  and $P{f2})
+ and year(f.fecha)=year($P{f1}) and (convert(date,a.fecha) between $P{f1}  and $P{f2})
 group by a.CveAgente,ag.nombre
 order by a.CveAgente]]>
 	</queryString>
@@ -89,7 +89,7 @@ order by a.CveAgente]]>
 					<subreportParameterExpression><![CDATA[$F{CveAgente}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "newReport3.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\comision\\newReport3.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
