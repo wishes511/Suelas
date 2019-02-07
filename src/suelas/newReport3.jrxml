@@ -22,7 +22,7 @@ join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
 join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
 JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
 where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and 
-(convert(date,a.fecha) between $P{f1}  and $P{f2})  AND YEAR(f.FECHA)=year($P{f1}) and  year(car.FDepDxC)=year($P{f1})
+(convert(date,a.fecha) between $P{f1}  and $P{f2}) and  year(car.FDepDxC)=year($P{f1})
 group by car.referencia,c.NOMBRE
 order by nombre]]>
 	</queryString>

@@ -41,7 +41,7 @@ join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
 join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
 JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
 where car.saldo=0 and  a.cveagente=$P{agente} and a.cuenta=50 and c.Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and car.referencia=$P{referencia}
- and year(f.fecha)=year($P{f1}) and year(dp.fecha)=year($P{f1}) and year(a.fecha)=year($P{f1}) and (convert(date,a.fecha) between $P{f1} and $P{f2})
+ and year(a.fecha)=year($P{f1}) and (convert(date,a.fecha) between $P{f1} and $P{f2})
 group by car.referencia]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
