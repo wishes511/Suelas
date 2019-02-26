@@ -16,13 +16,13 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select car.referencia,MAX(convert(date,a.Fechac)) as fecha,c.NOMBRE,max(convert(date,a.fecha)) as 'abono',max(car.Importe) as 'total'
+		<![CDATA[select car.referencia,max(convert(date,a.Fechac)) as fecha,c.NOMBRE,max(convert(date,a.fecha)) as 'abono',max(car.Importe) as 'total'
 from RACobranzaPhylon.dbo.abonos a
 join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
 join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
-JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
-where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and 
-(convert(date,a.fecha) between $P{f1}  and $P{f2}) and  year(car.FDepDxC)=year($P{f1})
+JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON car.NUMCLIENTE=C.NUMCLIENTE
+where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and  year(car.FDepDxC)=year($P{f1}) and ( year(f.fecha)=year($P{f1}) or year(f.fecha)=year($P{f1})-1) and (year(car.Fecha)=year('01/01/2019') or (month(car.fecha) >9 and year(car.fecha)=year('01/01/2019')-1))
+ and (convert(date,a.fecha) between $P{f1}  and $P{f2}) 
 group by car.referencia,c.NOMBRE
 order by nombre]]>
 	</queryString>
