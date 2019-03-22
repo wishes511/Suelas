@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
 	<property name="ireport.zoom" value="1.3310000000000013"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -75,7 +75,7 @@ order by a.CveAgente]]>
 				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="14" width="555" height="14" uuid="1b4dd0bc-f9aa-46fe-897d-a5de7a8fe7d0"/>
+				<reportElement x="0" y="14" width="572" height="14" uuid="1b4dd0bc-f9aa-46fe-897d-a5de7a8fe7d0"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
