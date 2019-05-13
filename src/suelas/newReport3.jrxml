@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
 	<property name="ireport.zoom" value="2.143588810000003"/>
-	<property name="ireport.x" value="438"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
@@ -22,14 +22,12 @@ join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
 join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
 JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON car.NUMCLIENTE=C.NUMCLIENTE
 where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and  
-year(car.FDepDxC)=year($P{f1}) and 
+(year(car.FDepDxC)=year('01/03/2019') or year(car.fdepdxc)=year('01/03/2019')-1) and 
 ( year(f.fecha)=year($P{f1}) or (year(f.fecha)=year($P{f1})-1 and month(car.fecha) >10)) 
 and (year(car.Fecha)=year($P{f1}) or (month(car.fecha) >10 and year(car.fecha)=year($P{f1} )-1))
 and (convert(date,a.fecha) between $P{f1}  and $P{f2}) 
 group by car.referencia,c.NOMBRE,f.totalpares
-order by f.totalpares desc
-
-]]>
+order by f.totalpares desc]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
 	<field name="fecha" class="java.lang.String"/>
@@ -47,6 +45,10 @@ order by f.totalpares desc
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<variable name="totalcomision" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="totalpares" class="java.lang.Short" calculation="Sum">
+		<variableExpression><![CDATA[$F{TotalPares}]]></variableExpression>
+	</variable>
+	<variable name="otrot" class="java.lang.Integer"/>
 	<columnHeader>
 		<band height="13" splitType="Stretch">
 			<staticText>
@@ -170,7 +172,7 @@ order by f.totalpares desc
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="comision" toVariable="totalcomision" calculation="Sum"/>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report2comp_nolinea.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\comision\\report2comp_nolinea.jasper"]]></subreportExpression>
 			</subreport>
 			<textField pattern="#,##0">
 				<reportElement x="187" y="1" width="57" height="11" uuid="52254574-c8c7-42c2-8cc9-9a314342d690"/>
@@ -180,6 +182,26 @@ order by f.totalpares desc
 				<textFieldExpression><![CDATA[$F{TotalPares}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band>
+			<subreport>
+				<reportElement x="38" y="0" width="436" height="0" uuid="c31cac71-c2cb-4561-80da-a8bf2ba1409c"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$P{agente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalpares" toVariable="otrot" calculation="Sum"/>
+				<subreportExpression><![CDATA["C:\\af\\comision\\n.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 	<summary>
 		<band height="18" splitType="Stretch">
@@ -187,7 +209,7 @@ order by f.totalpares desc
 				<reportElement x="57" y="2" width="555" height="1" uuid="55e1a438-d8c3-4c39-9ebd-1a244f2f24e7"/>
 			</line>
 			<staticText>
-				<reportElement x="244" y="3" width="68" height="15" uuid="745218e9-eb5a-4ffc-a3dd-3dd8e2c64294"/>
+				<reportElement x="119" y="3" width="68" height="15" uuid="745218e9-eb5a-4ffc-a3dd-3dd8e2c64294"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -206,6 +228,13 @@ order by f.totalpares desc
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{totalcomision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="187" y="2" width="57" height="15" uuid="f38379fb-53e7-43e9-a732-1c67fe28cafa"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{otrot}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

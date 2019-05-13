@@ -26,6 +26,7 @@ order by a.CveAgente]]>
 	</queryString>
 	<field name="CveAgente" class="java.lang.Short"/>
 	<field name="Nombre" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Short"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -89,9 +90,11 @@ order by a.CveAgente]]>
 					<subreportParameterExpression><![CDATA[$F{CveAgente}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalpares" toVariable="total"/>
 				<subreportExpression><![CDATA["C:\\af\\comision\\newReport3.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
+		<band height="24"/>
 	</detail>
 	<pageFooter>
 		<band height="22" splitType="Stretch">

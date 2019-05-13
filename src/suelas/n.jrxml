@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
+	<property name="ireport.zoom" value="2.143588810000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="agente" class="java.lang.Short">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select car.referencia,max(convert(date,a.Fechac)) as fecha,c.NOMBRE,max(convert(date,a.fecha)) as 'abono',max(car.Importe) as 'total',(f.TotalPares)
+from RACobranzaPhylon.dbo.abonos a
+join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
+join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
+JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON car.NUMCLIENTE=C.NUMCLIENTE
+where car.saldo=0 and a.cuenta=50 and Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and a.cveagente=$P{agente} and  
+year(car.FDepDxC)=year($P{f1}) and 
+( year(f.fecha)=year($P{f1}) or (year(f.fecha)=year($P{f1})-1 and month(car.fecha) >10)) 
+and (year(car.Fecha)=year($P{f1}) or (month(car.fecha) >10 and year(car.fecha)=year($P{f1} )-1))
+and (convert(date,a.fecha) between $P{f1}  and $P{f2}) 
+group by car.referencia,c.NOMBRE,f.totalpares
+order by f.totalpares desc]]>
+	</queryString>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="abono" class="java.lang.String"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="TotalPares" class="java.lang.Short"/>
+	<variable name="total_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_2" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="totalcomision" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="totalpares" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{TotalPares}.intValue()]]></variableExpression>
+	</variable>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+</jasperReport>
