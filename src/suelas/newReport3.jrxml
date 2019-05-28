@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ccf7a024-ab52-46e4-a90c-35f018d096c1">
-	<property name="ireport.zoom" value="2.143588810000003"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.6105100000000019"/>
+	<property name="ireport.x" value="145"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\Users\\gateway1\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\Users\\gateway1-\\Documents\\NetBeansProjects\\suelas\\src\\suelas\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="f1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -44,11 +44,13 @@ order by f.totalpares desc]]>
 	<variable name="total_3" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
-	<variable name="totalcomision" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="totalcomision" class="java.math.BigDecimal"/>
 	<variable name="totalpares" class="java.lang.Short" calculation="Sum">
 		<variableExpression><![CDATA[$F{TotalPares}]]></variableExpression>
 	</variable>
 	<variable name="otrot" class="java.lang.Integer"/>
+	<variable name="porcomision" class="java.math.BigDecimal"/>
+	<variable name="dias" class="java.lang.Integer"/>
 	<columnHeader>
 		<band height="13" splitType="Stretch">
 			<staticText>
@@ -117,7 +119,46 @@ order by f.totalpares desc]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band splitType="Stretch">
+			<subreport>
+				<reportElement x="187" y="0" width="155" height="0" uuid="08b7bed9-abf8-48a3-8e6a-afcca4c5b037"/>
+				<subreportParameter name="referencia">
+					<subreportParameterExpression><![CDATA[$F{referencia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="agente">
+					<subreportParameterExpression><![CDATA[$P{agente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="total">
+					<subreportParameterExpression><![CDATA[$F{total}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="comision" toVariable="totalcomision"/>
+				<returnValue subreportVariable="porcomision" toVariable="porcomision"/>
+				<returnValue subreportVariable="dias" toVariable="dias"/>
+				<subreportExpression><![CDATA["C:\\af\\comision\\report2comp_nolinea.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="12">
+			<textField>
+				<reportElement x="378" y="0" width="79" height="11" uuid="baa193f3-f0b8-4dcf-a4ce-70ada24342d2"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="187" y="0" width="57" height="11" uuid="52254574-c8c7-42c2-8cc9-9a314342d690"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TotalPares}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="61" height="12" uuid="590c7fd3-906a-4327-9fe3-1e369ca1695e"/>
 				<textElement textAlignment="Center">
@@ -139,13 +180,6 @@ order by f.totalpares desc]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="378" y="1" width="79" height="11" uuid="baa193f3-f0b8-4dcf-a4ce-70ada24342d2"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="312" y="0" width="66" height="12" uuid="f915fe83-fb09-46e8-aba9-39df3208a634"/>
 				<textElement textAlignment="Center">
@@ -153,33 +187,26 @@ order by f.totalpares desc]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<subreport>
-				<reportElement x="457" y="1" width="155" height="11" uuid="08b7bed9-abf8-48a3-8e6a-afcca4c5b037"/>
-				<subreportParameter name="referencia">
-					<subreportParameterExpression><![CDATA[$F{referencia}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="f1">
-					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="f2">
-					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="agente">
-					<subreportParameterExpression><![CDATA[$P{agente}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="total">
-					<subreportParameterExpression><![CDATA[$F{total}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<returnValue subreportVariable="comision" toVariable="totalcomision" calculation="Sum"/>
-				<subreportExpression><![CDATA["C:\\af\\comision\\report2comp_nolinea.jasper"]]></subreportExpression>
-			</subreport>
-			<textField pattern="#,##0">
-				<reportElement x="187" y="1" width="57" height="11" uuid="52254574-c8c7-42c2-8cc9-9a314342d690"/>
+			<textField>
+				<reportElement x="457" y="0" width="17" height="11" uuid="78c337b3-669f-43aa-8a3b-9974890c8f36"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TotalPares}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{dias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="0" width="59" height="11" uuid="1c49c14b-b46c-41f1-a048-10073a567780"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{porcomision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="533" y="0" width="79" height="11" uuid="10d87a0a-e43d-4ebf-8665-60ab0c445962"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalcomision}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band>

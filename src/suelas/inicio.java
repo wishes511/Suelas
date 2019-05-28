@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import modelo.Copiaarchivo;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -30,7 +31,17 @@ public class inicio extends javax.swing.JFrame {
         super("Comisiones por Agente");
         initComponents();
         this.setLocationRelativeTo(null);
-
+        LoadVersion();
+    }
+    private void LoadVersion(){
+        try {
+                Copiaarchivo ca= new Copiaarchivo();
+                ca.start();
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error en el uso de un directorio para copia de archivos \n"+e.getMessage(), "TOP-SUELAS", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6facd4dc-3800-414c-afb6-a8e9a8cd8ddc">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="referencia" class="java.lang.String">
@@ -19,61 +19,49 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select car.referencia,
-datediff(day,max(a.fechac),max(a.Fecha))as 'dia',
-perc = case when (datediff(day,max(a.fechac),max(a.Fecha))<45 and (( min(dp.linea)!=23) and min(dp.linea)!=24)) then 2.5 
-when ((datediff(day,max(a.fechac),max(a.Fecha))>45 and datediff(day,max(a.fechac),max(a.Fecha))<61) and (min(dp.linea)!=23 and min(dp.linea)!=24)) then 2 
-when (datediff(day,max(a.fechac),max(a.Fecha))>60 and datediff(day,max(a.fechac),max(a.Fecha))<76 and (min(dp.linea)!=23 and min(dp.linea)!=24)) then 1.5
-when (datediff(day,max(a.fechac),max(a.Fecha))<45 and (min(dp.linea)=23 or min(dp.linea)=24)) then 1.5 
-when ((datediff(day,max(a.fechac),max(a.Fecha))>45 and datediff(day,max(a.fechac),max(a.Fecha))<61) and (min(dp.linea)=23 or min(dp.linea)=24)) then 1 
-when (datediff(day,max(a.fechac),max(a.Fecha))>60 and datediff(day,max(a.fechac),max(a.Fecha))<76 and (min(dp.linea)=23 or min(dp.linea)=24)) then 0.5 else 0 END,
+		<![CDATA[select distinct car.referencia,
+datediff(day,a.fechac,a.fecha)as 'dia',dp.totalpares,dp.precio,
+perc = case when (datediff(day,a.fechac,a.fecha)<45 and (( dp.linea!=23) and dp.linea!=24)) then 2.5 
+when ((datediff(day,a.fechac,a.fecha)>45 and datediff(day,a.fechac,a.fecha)<61) and (dp.linea!=23 and dp.linea!=24)) then 2 
+when (datediff(day,a.fechac,a.fecha)>60 and datediff(day,a.fechac,a.fecha)<76 and (dp.linea!=23 and dp.linea!=24)) then 1.5
+when (datediff(day,a.fechac,a.fecha)<45 and (dp.linea=23 or dp.linea=24)) then 1.5 
+when ((datediff(day,a.fechac,a.fecha)>45 and datediff(day,a.fechac,a.fecha)<61) and (dp.linea=23 or dp.linea=24)) then 1 
+when (datediff(day,a.fechac,a.fecha)>60 and datediff(day,a.fechac,a.fecha)<76 and (dp.linea=23 or dp.linea=24)) then 0.5 else 0 END,
 
-perc1 = case when (datediff(day,max(a.fechac),max(a.Fecha))<45 and (( min(dp.linea)!=23) and min(dp.linea)!=24)) then 0.025* $P{total}
-when ((datediff(day,max(a.fechac),max(a.Fecha))>45 and datediff(day,max(a.fechac),max(a.Fecha))<61) and (min(dp.linea)!=23 and min(dp.linea)!=24)) then 0.020 * $P{total}
-when (datediff(day,max(a.fechac),max(a.Fecha))>60 and datediff(day,max(a.fechac),max(a.Fecha))<76 and (min(dp.linea)!=23 and min(dp.linea)!=24)) then 0.015* $P{total}
-when (datediff(day,max(a.fechac),max(a.Fecha))<45 and (min(dp.linea)=23 or min(dp.linea)=24)) then 0.015* $P{total}  
-when ((datediff(day,max(a.fechac),max(a.Fecha))>45 and datediff(day,max(a.fechac),max(a.Fecha))<61) and (min(dp.linea)=23 or min(dp.linea)=24)) then 0.01 * $P{total}
-when (datediff(day,max(a.fechac),max(a.Fecha))>60 and datediff(day,max(a.fechac),max(a.Fecha))<76 and (min(dp.linea)=23 or min(dp.linea)=24)) then 0.005* $P{total} else 0 END
+perc1 = case when (datediff(day,a.fechac,a.fecha)<45 and (( dp.linea!=23) and dp.linea!=24)) then 0.025* (dp.totalpares*dp.precio)
+when ((datediff(day,a.fechac,a.fecha)>45 and datediff(day,a.fechac,a.fecha)<61) and (dp.linea!=23 and dp.linea!=24)) then 0.020 * (dp.totalpares*dp.precio)
+when (datediff(day,a.fechac,a.fecha)>60 and datediff(day,a.fechac,a.fecha)<76 and (dp.linea!=23 and dp.linea!=24)) then 0.015* (dp.totalpares*dp.precio)
+when (datediff(day,a.fechac,a.fecha)<45 and (dp.linea=23 or dp.linea=24)) then 0.015* (dp.totalpares*dp.precio)  
+when ((datediff(day,a.fechac,a.fecha)>45 and datediff(day,a.fechac,a.fecha)<61) and (dp.linea=23 or dp.linea=24)) then 0.01 * (dp.totalpares*dp.precio)
+when (datediff(day,a.fechac,a.fecha)>60 and datediff(day,a.fechac,a.fecha)<76 and (dp.linea=23 or dp.linea=24)) then 0.005* (dp.totalpares*dp.precio) else 0 END
 
 from RACobranzaPhylon.dbo.abonos a 
 join RCPTPhylon.dbo.DFacturas dp on substring(a.referenciac,0,8)=dp.factura
 join RACobranzaPhylon.dbo.Cargos car on a.ReferenciaC=car.Referencia
 join RCPTPhylon.dbo.facturas f on substring(a.referenciac,0,8)=f.factura
 JOIN RACOBRANZAPHYLON.DBO.CLIENTES C ON F.NUMCLIENTE=C.NUMCLIENTE
-where car.saldo=0 and  a.cveagente=$P{agente} and a.cuenta=50 and c.Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and car.referencia=$P{referencia}
-and ( year(f.fecha)=year($P{f1}) or year(f.fecha)=year($P{f1})-1) and year(a.fecha)=year($P{f1}) and (convert(date,a.fecha) between $P{f1} and $P{f2})
-group by car.referencia]]>
+where car.saldo=0 and  a.cveagente=$P{agente} and a.cuenta=50 and c.Nombre NOT like '%MTRA%' and Nombre NOT like '%MUESTRA%' and car.referencia=$P{referencia} and
+ (year(car.Fecha)=year($P{f1}) or (month(car.fecha) >9 ) 
+ and ( year(f.fecha)=year($P{f1}) ) and year(a.fechac)=2019)  and year(dp.fecha)=year($P{f1}) and
+ (convert(date,a.fecha) between $P{f1} and $P{f2})
+group by car.referencia,a.fechac,a.fecha,dp.linea,dp.totalpares,dp.precio]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
 	<field name="dia" class="java.lang.Integer"/>
+	<field name="totalpares" class="java.lang.Short"/>
+	<field name="precio" class="java.math.BigDecimal"/>
 	<field name="perc" class="java.math.BigDecimal"/>
 	<field name="perc1" class="java.math.BigDecimal"/>
-	<variable name="comision" class="java.math.BigDecimal">
+	<variable name="comision" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{perc1}]]></variableExpression>
 	</variable>
+	<variable name="dias" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{dia}]]></variableExpression>
+	</variable>
+	<variable name="porcomision" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{perc}]]></variableExpression>
+	</variable>
 	<detail>
-		<band height="11" splitType="Stretch">
-			<textField>
-				<reportElement x="19" y="0" width="59" height="11" uuid="916f457e-5f5f-433b-abe8-6438fc2d56ad"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{perc}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="19" height="11" uuid="98b7e40e-cd91-4b59-b318-7b49c0cc2cac"/>
-				<textElement textAlignment="Center">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="78" y="0" width="89" height="11" uuid="5e7b91cf-8767-42f4-a71a-c19580bce0ab"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{perc1}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</detail>
 </jasperReport>
